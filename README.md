@@ -2,4 +2,4 @@
 
 ## 开始分析
 
-1. [下载数据](download.md)
+1. [下载数据](doc/download.md)
