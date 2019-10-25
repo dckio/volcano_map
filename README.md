@@ -1,4 +1,4 @@
-# GSE29272差异表达分析
+# 火山图
 
 ## 依赖
 
@@ -7,9 +7,11 @@
 1. R版本: 3.6.1
 2. 依赖R包：
 
-    | 名称  | 版本  |
-    |------|-------|
-    |   |   |
+    |      名称   |    版本   |
+    |------------|----------|
+    |   ggplot2  |   3.2.1  |
+    | argparser  |     0.4  |
+    |  openxlsx  | 4.1.0.1  |
     
 ## 流程与项目
 
@@ -36,19 +38,23 @@
 
 ## 项目的目录结构
 
-项目的目录结构参照[BMG191024001-gse29272_dge](https://github.com/sxropensource/BMG191024001-gse29272_dge)。
+项目的目录结构参照[BMG191024001-volcano_map_edgerAML](https://github.com/sxropensource/BMG191024001-volcano_map_edgerAML)。
 
 ## 流程的目录结构
 
 ```
-gse29272_dge
+volcano_map
 ├── README.md
 ├── data
+│   └── edgerAML.tsv
 ├── doc
-│   └── download.md
+│   └── volcano_map.md
 ├── figs
+│   ├── volcano_map.pdf
+│   └── volcano_map.png
 ├── output
 └── src
+    └── volcano_map.R
 ```
 
 1. 流程根目录的`README.md`文件对流程进行说明，可以导向`doc`目录下任一步骤的文档。
@@ -105,4 +111,4 @@ gse29272_dge
 
 ## 步骤
 
-1. [下载数据](doc/download.md)
+1. [画图](doc/volcano_map.md)
