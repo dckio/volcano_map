@@ -2,6 +2,8 @@
 
 ## 依赖
 
+在流程说明文档中，要对运行本流程需要安装的依赖进行说明。
+
 1. R版本: 3.6.1
 2. 依赖R包：
 
@@ -30,15 +32,76 @@
 例如，在使用`limma`进行差异表达分析时，分组为2和大于2差异分析的代码是有一些不同的。这时文档
 就必须对分组为2时应该选择哪些代码、分组大于2应该选择哪些代码做出解释。
 
+这些每一步骤的代码、每一步骤的文档一起组成一个流程。
+
+## 项目的目录结构
+
+项目的目录结构参照[BMG191024001-gse29272_dge](https://github.com/sxropensource/BMG191024001-gse29272_dge)。
+
 ## 流程的目录结构
 
 ```
 gse29272_dge
 ├── README.md
+├── data
 ├── doc
 │   └── download.md
+├── figs
+├── output
 └── src
 ```
+
+1. 流程根目录的`README.md`文件对流程进行说明，可以导向`doc`目录下任一步骤的文档。
+2. 在流程开发过程中，可以建立项目分析过程中的目录（`data`、`figs`、`output`）
+
+    1. `data`：示例数据
+    2. `figs`：示例输出图片
+    3. `output`：示例输出
+3. 流程开发过程中如果需要输入数据，这些数据应当在data目录中存在。一般情况下不允许使用
+   `data`目录不存在的数据。项目分析过程中亦然。
+4. 一般情况下，流程开发过程中如果需要输出图片请输出到`figs`目录。项目分析过程中亦然。
+5. 一般情况下，流程开发过程中如果需要输出数据请输出到`output`目录。项目分析过程中亦然。
+6. 流程开发过程中牵扯到文件，可以有以下几种方法指定路径：
+
+    1. 通过命令行参数指定（推荐使用`argparser`）
+    
+        例如，流程代码可以这样写：
+        
+        ```r
+        #!/usr/bin/env Rscript
+        library(argparser, quietly=TRUE)
+
+        parser <- arg_parser("Volcano Map")
+        parser <- add_argument(parser, "--fdr", help="FDR", type="numeric", default=0.01)
+        parser <- add_argument(parser, "--logfc", help="logFC", type="numeric", default=2)
+        parser <- add_argument(parser, "--data_file", help="data file")
+        parser <- add_argument(parser, "--fmt", help="data file format", default="tsv")
+
+        argv <- parse_args(parser)
+
+        data <- read.delim(argv$data_file)
+        ```
+        
+        运行的时候可以这样指定：
+        ```
+        $ Rscript volcano_map.R --data-file data/data-file.tsv
+        ```
+    2. 使用相对于项目根目录的相对目录
+    
+        ```r
+        dataFile <- "data/data-file.tsv"
+        data <- read.delim(dataFile)
+        ```
+    3. 先指定项目根目录，然后通过`file.path`合成绝对路径。
+    
+        ```r
+        basedir <- "/home/bmg/Projects/BMG191024001-gse29272_dge"
+        dataFile <- file.path(basedir, "data", "data-file.tsv")
+        data <- read.delim(dataFile)
+        ```
+    不包含探索性代码的步骤推荐使用方法1，其次是方法2、方法3。这三种方法的好处是，步骤代码不依赖外部环境，
+    生产人员只要建立相应的项目目录结构就可以进行分析。方法3也只需要更改`basedir`。
+6. 每个步骤都必须在`doc`目录下建立步骤说明。有必要的情况下还需要更详尽的说明。
 
 ## 步骤
 
